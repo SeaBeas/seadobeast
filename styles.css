@@ -1,0 +1,89 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 0;
+    position: relative; /* Para o posicionamento do conteúdo */
+}
+
+.header-content {
+    display: flex;
+    align-items: center; /* Alinha verticalmente o ícone e o título */
+    padding-left: 15px; /* Espaçamento à esquerda */
+}
+
+.fish-icon {
+    margin-right: 10px; /* Espaço entre o ícone e o título */
+}
+
+h1 {
+    margin: 0; /* Remove margens do título */
+}
+
+.tabs {
+    display: flex;
+    justify-content: flex-end; /* Alinha as tabs à direita */
+    gap: 20px;
+    padding-right: 15px; /* Espaçamento à direita */
+}
+
+.tab {
+    padding: 15px;
+    cursor: pointer;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+.tab:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.cart-icon {
+    display: flex;
+    align-items: center; /* Centraliza o ícone do carrinho verticalmente */
+}
+
+main {
+    padding: 20px;
+}
+
+.product-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+}
+
+.card img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+.price {
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.buy-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.buy-button:hover {
+    background-color: #45a049;
+}

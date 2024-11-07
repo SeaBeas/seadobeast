@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peixes e Vendas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilos básicos para o carrinho */
+        .cart {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            width: 300px;
+            max-height: 400px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+        .cart h3 {
+            margin-top: 0;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .cart-item p {
+            margin: 0;
+        }
+        .cart-toggle {
+            position: relative;
+        }
+        .cart-toggle .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .remove-button {
+            background: none;
+            border: none;
+            color: red;
+            cursor: pointer;
+        }
+        .checkout-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="fish-icon">
+                <i class="fas fa-fish" style="color: white; font-size: 30px;"></i>
+            </div>
+            <h1>Sea Beast Do Paulinho</h1>
+        </div>
+        <div class="tabs">
+            <div class="tab">Mais Produtos</div>
+            <div class="tab">Promoções</div>
+            <div class="tab">Fale Conosco</div>
+            <div class="cart-icon cart-toggle" onclick="toggleCart()">
+                <a href="#" style="color: white;">
+                    <i class="fas fa-shopping-cart" style="font-size: 30px;"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <h2>Produtos em Destaque</h2>
+        <div class="product-cards">
+            <div class="card">
+                <img src="molinete1.jpg" alt="Produto 1">
+                <h3>Molinete De Pesca</h3>
+                <p>Molinete De Pesca Marine Sports Azura 3000 - 6 Rolamentos - Drag 8kg - Recolhimento.: 5.2:1.</p>
+                <p class="price">R$ 300,00</p>
+                <button class="buy-button" onclick="adicionarAoCarrinho('Molinete De Pesca', 300)">Comprar</button>
+            </div>
+            <div class="card">
+                <img src="Vara.jpg" alt="Produto 2">
+                <h3>Vara de Pesca</h3>
+                <p>Vara Shimano Slx Tournament 5'8 (1,73m) 8-17lb Carretilha.</p>
+                <p class="price">R$ 1500,00</p>
+                <button class="buy-button" onclick="adicionarAoCarrinho('Vara de Pesca', 1500)">Comprar</button>
+            </div>
+            <div class="card">
+                <img src="isca.jpg" alt="Produto 3">
+                <h3>Iscas De Pesca</h3>
+                <p>1pcs Iscas De Pesca Minnow Isca Artificial 10cm 8g.</p>
+                <p class="price">R$ 5,00</p>
+                <button class="buy-button" onclick="adicionarAoCarrinho('Iscas De Pesca', 5)">Comprar</button>
+            </div>
+            <div class="card">
+                <img src="kit.jpg" alt="Produto 4">
+                <h3>Kit 4 Varas De Pesca</h3>
+                <p>Kit 4 Varas De Pesca Com Molinete Ultra Light Cores Diversas + Linha</p>
+                <p class="price">R$ 2500,00</p>
+                <button class="buy-button" onclick="adicionarAoCarrinho('Kit 4 Varas De Pesca', 2500)">Comprar</button>
+            </div>
+            <div class="card">
+                <img src="anzol.jpg" alt="Produto 5">
+                <h3>Anzol de Pesca</h3>
+                <p>Anzol para Pesca Maruseigo Nº10 com haste de 3cm - 10pçs.</p>
+                <p class="price">R$ 5,00</p>
+                <button class="buy-button" onclick="adicionarAoCarrinho('Anzol de Pesca', 5)">Comprar</button>
+            </div>
+            <div class="card">
+                <img src="linha.jpg" alt="Produto 6">
+                <h3>Linha de Pesca</h3>
+                <p>Linha Pesca Premium Dourado 040 Branca 100m.</p>
+                <p class="price">R$ 35,00</p>
+                <button class="buy-button" onclick="adicionarAoCarrinho('Linha de Pesca', 35)">Comprar</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Carrinho -->
+    <div class="cart" id="cart">
+        <h3>Carrinho</h3>
+        <div id="cart-items"></div>
+        <p id="total-price">Total: R$ 0,00</p>
+        <button class="checkout-button" onclick="concluirCompra()">Concluir Compra</button>
+    </div>
+
+    <script>
+        let carrinho = [];
+        let totalPreco = 0;
+
+        function adicionarAoCarrinho(nome, preco) {
+            carrinho.push({ nome, preco });
+            totalPreco += preco;
+            atualizarCarrinho();
+        }
+
+        function atualizarCarrinho() {
+            const cartItems = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const totalPrice = document.getElementById('total-price');
+
+            // Atualizar contagem de itens
+            cartCount.textContent = carrinho.length;
+
+            // Atualizar itens no carrinho
+            cartItems.innerHTML = '';
+            carrinho.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('cart-item');
+                itemDiv.innerHTML = `<p>${item.nome}</p><p>R$ ${item.preco.toFixed(2)}</p>
+                                     <button class="remove-button" onclick="removerDoCarrinho(${index})">Remover</button>`;
+                cartItems.appendChild(itemDiv);
+            });
+
+            // Atualizar o preço total
+            totalPrice.textContent = `Total: R$ ${totalPreco.toFixed(2)}`;
+        }
+
+        function removerDoCarrinho(index) {
+            totalPreco -= carrinho[index].preco; // Subtrai o preço do item removido
+            carrinho.splice(index, 1); // Remove o item do carrinho
+            atualizarCarrinho(); // Atualiza o carrinho
+        }
+
+        function concluirCompra() {
+            if (carrinho.length === 0) {
+                alert("Seu carrinho está vazio!");
+            } else {
+                // Redireciona para a página de confirmação
+                window.location.href = 'confirmacao.html'; // Substitua por sua página de confirmação
+            }
+        }
+
+        function toggleCart() {
+            const cart = document.getElementById('cart');
+            cart.style.display = cart.style.display === 'none' || cart.style.display === '' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
